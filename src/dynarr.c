@@ -11,7 +11,7 @@ typedef struct {
   size_t elem_size;
 } DynHeader;
 
-void* __dynarray_create(size_t type_size, size_t alloc_size) {
+void* _dynarray_create(size_t type_size, size_t alloc_size) {
   DynHeader* arr = (DynHeader*)(malloc(sizeof(DynHeader) + (type_size * alloc_size)));
 
   if (arr == NULL){
@@ -26,7 +26,7 @@ void* __dynarray_create(size_t type_size, size_t alloc_size) {
 }
 
 /*
-void __dynarray_push(void* header, void* elem, size_t elem_size) {
+void _dynarray_push(void* header, void* elem, size_t elem_size) {
   DynHeader* h = header;
 
   if (h -> size >= h -> capacity) {
@@ -49,15 +49,24 @@ void __dynarray_push(void* header, void* elem, size_t elem_size) {
 }
 */
 
-size_t __dynarray_size(void* header) {
+size_t _dynarray_size(void* header) {
   return ((DynHeader*)(header) - 1) -> size;
 }
 
-size_t __dynarray_cap(void* header) {
+size_t _dynarray_cap(void* header) {
   return ((DynHeader*)(header) - 1) -> capacity;
 }
 
-void __dynarray_push(void** header, void* elem, size_t elem_size) {
+void* _dynarray_elem_at(void* header, int pos) {
+  DynHeader* h = (DynHeader*)(header) - 1;
+  if (pos < 0 || pos >= (int)(h -> size)) {
+    return NULL;
+  }
+
+  return (char*)(header) + (pos * (h -> elem_size));
+}
+
+void _dynarray_push(void** header, void* elem, size_t elem_size) {
   void* data_ptr = *header;
   
   DynHeader* h = (DynHeader*)(data_ptr) - 1;
@@ -88,7 +97,7 @@ void __dynarray_push(void** header, void* elem, size_t elem_size) {
   h -> size ++;
 }
 
-void __dynarray_put(void** header, void* elem, size_t elem_size, int pos) {
+void _dynarray_set(void** header, void* elem, size_t elem_size, int pos) {
   void* data_ptr = *header;
 
   DynHeader* h = (DynHeader*)(data_ptr) - 1;
@@ -132,5 +141,4 @@ void __dynarray_put(void** header, void* elem, size_t elem_size, int pos) {
   void* dest = (char*)(data_ptr) + (pos * h -> elem_size);
   memcpy(dest, elem, elem_size);
 }
-
 

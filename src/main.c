@@ -16,9 +16,13 @@ int main(int argc, char *argv[]) {
   printf("%d %d\n", arr[0], arr[1]);
   
   newelem = 8;
-  dynPut(arr, newelem, 0);
+  dynSet(arr, newelem, 0);
 
   printf("%d %d\n", arr[0], arr[1]);
+
+  printf("%d %d %d\n", dynGetValue(arr, int, 0), dynGetPointer(arr, int, 0), *(dynGetPointer(arr, int, 0)));
 }
+
+
 
 

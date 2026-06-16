@@ -1,28 +1,44 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "dynarr.h"
 
 int main(int argc, char *argv[]) {
   FILE *fptr;
   fptr = fopen(argv[1], "r");
   
-  if (fptr == NULL){
+  if (fptr == NULL) {
     printf("ERROR: File could not be opened. \n");
+    return 1;
+  }
+  
+  unsigned int file_len = 0;
+
+  {
+    char c;
+    while ((c = fgetc(fptr)) != EOF) {
+      file_len ++;
+    }
+    printf("Total length of file: %d\n", file_len);
+    rewind(fptr);
+  };
+
+  char* file_data = malloc((size_t)(file_len + 1));
+
+  {
+    unsigned int i = 0;
+    char c;
+    while ((c = fgetc(fptr)) != EOF) {
+      file_data[i ++] = c;
+    }
+
+    file_data[i] = '\0';
   }
 
-  int* arr = newDynArr(int, 2);
-  arr[1] = 4;
-  int newelem = 16;
-  dynPush(arr, newelem);
-  printf("%d %d\n", arr[0], arr[1]);
-  
-  newelem = 8;
-  dynSet(arr, newelem, 0);
+  printf("File text:\n");
 
-  printf("%d %d\n", arr[0], arr[1]);
-
-  printf("%d %d %d\n", dynGetValue(arr, int, 0), dynGetPointer(arr, int, 0), *(dynGetPointer(arr, int, 0)));
+  for (int i = 0; i < file_len; i ++) {
+    printf("%c", file_data[i]);
+  }
 }
-
-
-
 

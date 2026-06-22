@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "dynarr.h"
+#include "tokens.h"
 
 int main(int argc, char *argv[]) {
   FILE *fptr;
@@ -21,7 +22,7 @@ int main(int argc, char *argv[]) {
     }
     printf("Total length of file: %d\n", file_len);
     rewind(fptr);
-  };
+  }
 
   char* file_data = malloc((size_t)(file_len + 1));
 
@@ -31,7 +32,6 @@ int main(int argc, char *argv[]) {
     while ((c = fgetc(fptr)) != EOF) {
       file_data[i ++] = c;
     }
-
     file_data[i] = '\0';
   }
 
@@ -40,5 +40,29 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < file_len; i ++) {
     printf("%c", file_data[i]);
   }
+
+  printf("\n");
+
+  Token* tokArr = newDynArr(Token, 1);
+
+  unsigned int reading_pos = 0;
+  Token currentTok;
+
+  do {
+    currentTok = nextTok(file_data, &reading_pos, file_len);
+    dynPush(tokArr, currentTok);
+  } while (currentTok.type != END_OF_FILE);
+
+  printf("\n");
+
+  for (int i = 0; i < dynGetSize(tokArr); i ++) {
+    printTok(tokArr[i]);
+    printf("\n");
+  }
+
+  return 0;
 }
+
+
+
 

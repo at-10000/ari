@@ -1,26 +1,34 @@
+#include <stddef.h>
+
 #ifndef TOKENS_H
 #define TOKENS_H
 
-char punctuation[] = {'(', ')', '[', ']', '{', '}', ',', ';', '\0'};
-
-char* keywords[] = {"print\0"};
-
 typedef enum {
   NUMBER,
+  STR_LIT,
+  IDENTIFIER,
   OPERATOR,
   PRINT,
   L_PAREN,
   R_PAREN,
-  EOF
+  SEMICOLON,
+  END_OF_FILE,
+  NONE
 } TokType;
 
 typedef struct {
   TokType type;
   char* text; // maybe get an actual value for the literal later
   size_t text_len;
-  int row;
+  long long num_val;
+  // bool is_num;
+  int line;
   int column;
 } Token;
+
+Token nextTok (char* text, unsigned int* start, size_t size);
+
+void printTok (Token tok);
 
 #endif
 

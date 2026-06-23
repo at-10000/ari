@@ -6,11 +6,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-char punctuation[] = {'(', ')', '[', ']', '{', '}', ',', ';', '\0'};
-char whitespace[] = {' ', '\t', '\n', '\0'};
+char punctuation[] = {'(', ')', '[', ']', '{', '}', ',', ';', '\0'}; // you should probably add '!' among these at some point
+char whitespace[] = {' ', '\t', '\n', '\r', '\0'};
 char operators[] = {'+', '-', '*', '/', '=', '\0'};
+
+// short int compare_arr_size = 6;
+// char* compare[] = {"==\0", "<=\0", ">=\0", "!=\0", "<\0", ">\0"};
+
 char* keywords[] = {"print\0"};
-char* tokTypes[] = {"NUMBER\0", "STR_LIT\0", "IDENTIFIER\0", "OPERATOR\0", "PRINT\0", "L_PAREN\0", "R_PAREN\0", "SEMICOLON\0", "END_OF_FILE\0", "NONE\0"};
+// char* tokTypes[] = {"NUMBER\0", "STR_LIT\0", "IDENTIFIER\0", "OPERATOR\0", "PRINT\0", "L_PAREN\0", "R_PAREN\0", "SEMICOLON\0", "END_OF_FILE\0", "NONE\0"};
+// REMEMBER TO CHANGE THE DAMN TOKEN TYPES ARRAY WHEN YOU CHANGE THEM IN THE ENUM
+
+char* tokTypes[] = {
+  "NUMBER", "STR_LIT", "IDENTIFIER",
+  "OPERATOR", "ADD_OP", "SUB_OP", "MUL_OP", "DIV_OP", "EQL_OP",
+  "IS_EQUAL", "LARGER_THAN", "SMALLER_THAN", "LARGER_OR_EQUAL", "SMALLER_OR_EQUAL",
+  "PRINT",
+  "L_PAREN", "R_PAREN", "SEMICOLON",
+  "END_OF_FILE", "NONE"
+};
 
 static unsigned int line = 0;
 static unsigned int column = 0;
@@ -35,7 +49,7 @@ void printTok (Token tok) {
   printf("\", text_len: %zu, ", tok.text_len);
   
   if (tok.type == NUMBER) {
-    printf("num_val: %lld, ", tok.num_val);
+    printf("num_val: %f, ", tok.num_val);
   }
 
   printf("line: %d, column: %d}", tok.line, tok.column);
@@ -65,7 +79,7 @@ TokType classifyPunct(char c) {
 
     default:
       return NONE;
-  }
+  } // finish this function for other punctuation
 }
 
 bool isWhitespace (char c) {
@@ -88,6 +102,48 @@ bool isOperator (char c) {
     i ++;
   }
   return false;
+}
+
+TokType classifyOperator (char c) {
+  switch (c) {
+    case '+':
+      return ADD_OP;
+    case '-':
+      return SUB_OP;
+    case '*':
+      return MUL_OP;
+    case '/':
+      return DIV_OP;
+    case '=':
+      return EQL_OP;
+    default:
+      return NONE;
+  }
+}
+
+TokType classifyCompare (char c1, char c2) {
+  if (c2 != '=') {
+    switch (c1) {
+      case '<':
+        return SMALLER_THAN;
+      case '>':
+        return LARGER_THAN;
+      default:
+        return NONE;
+    }
+  }
+  else {
+    switch (c1) {
+      case '=':
+        return IS_EQUAL;
+      case '<':
+        return SMALLER_OR_EQUAL;
+      case '>':
+        return LARGER_OR_EQUAL;
+      default:
+        return NONE;
+    }
+  }
 }
 
 bool canBeIdentifier (char c) {
@@ -139,8 +195,38 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
 
     return result;
   }
+  
+  {
+    TokType type = classifyCompare(text[i], text[i + 1]);
+    if (type != NONE) {
+      Token tok;
+      tok.type = type;
+      tok.line = line;
+      tok.column = column;
+
+      if (type == LARGER_THAN || type == SMALLER_THAN){
+        tok.text = malloc(2 * sizeof(char));
+        tok.text[0] = text[i];
+        tok.text[1] = '\0';
+        tok.text_len = 1;
+        *start = i + 1;
+      }
+      else {
+        tok.text = malloc(3 * sizeof(char));
+        tok.text[0] = text[i];
+        tok.text[1] = text[i + 1];
+        tok.text[2] = '\0';
+        tok.text_len = 2;
+        *start = i + 2;
+      }
+
+      return tok;
+    }
+  } // check for comparisons before isPunct so it doesn't catch == as =
 
   if (isPunct(text[i])) {
+    column ++;
+
     Token result;
     
     result.type = classifyPunct(text[i]);
@@ -148,24 +234,64 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
     result.text[0] = text[i];
     result.text[1] = '\0';
     result.text_len = 1;
+    result.line = line;
+    result.column = column; 
 
-    *start += 1; // if you leave it as ++, it gets stuck on the parenthesis on the first test "print(1)", are you incrementing the pointer?
+    *start = i + 1; // if you leave it as ++, it gets stuck on the parenthesis on the first test "print(1)", are you incrementing the pointer?
 
     printf("%c\n", text[i]);
 
-    // make a function to classify the punctuation and generate a token here
-    
     return result;
   }
   else if (isOperator(text[i])) {
+    column ++;
+
     Token result;
 
-    // TODO
+    result.type = classifyOperator(text[i]);
+    result.text = malloc(2 * sizeof(char));
+    result.text[0] = text[i];
+    result.text[1] = '\0';
+    result.text_len = 1;
+    result.line = line;
+    result.column = column; 
 
-    // build token accordingly with a function I guess
-    
+    *start = i + 1; // WHY DID THIS THING NOT WORK AND GIVE ME TWO EQL_OP FOR ONE EQUAL WHEN IT WAS += 1???
+
+    printf("%c\n", text[i]);
+
     return result;
   }
+
+  /*
+  {
+    TokType type = classifyCompare(text[i], text[i + 1]);
+    if (type != NONE) {
+      Token tok;
+      tok.type = type;
+      tok.line = line;
+      tok.column = column;
+
+      if (type == LARGER_THAN || type == SMALLER_THAN){
+        tok.text = malloc(2 * sizeof(char));
+        tok.text[0] = text[i];
+        tok.text[1] = '\0';
+        tok.text_len = 1;
+        *start = i + 1;
+      }
+      else {
+        tok.text = malloc(3 * sizeof(char));
+        tok.text[0] = text[i];
+        tok.text[1] = text[i + 1];
+        tok.text[2] = '\0';
+        tok.text_len = 2;
+        *start = i + 2;
+      }
+
+      return tok;
+    }
+  }
+  */
   
   /*
   else if (isWhitespace(text[i])) {
@@ -213,6 +339,39 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
     i ++;
     column ++;
 
+    // printf();
+
+    /*
+    if (dynGetSize(tok_text) >= 2) { // check for potential compare operator
+      TokType type = classifyCompare(tok_text[0], tok_text[1]);
+      if (type != NONE) {
+        Token tok;
+        tok.type = type;
+        tok.line = line;
+        tok.column = column;
+
+        if (type == LARGER_THAN || type == SMALLER_THAN){
+          tok.text = malloc(2 * sizeof(char));
+          tok.text[0] = tok_text[0];
+          tok.text[1] = '\0';
+          tok.text_len = 1;
+        }
+        else {
+          tok.text = malloc(3 * sizeof(char));
+          tok.text[0] = tok_text[0];
+          tok.text[1] = tok_text[1];
+          tok.text[2] = '\0';
+          tok.text_len = 2;
+        }
+
+        *start = i + 1;
+
+        return tok;
+      }  
+    }
+
+    */
+    
     // printf("%c %d\n", text[i], i);
   }
 
@@ -236,13 +395,14 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
   size_t len = dynGetSize(tok_text);
   tok.text = malloc(sizeof(char) * len);
   memcpy(tok.text, tok_text, sizeof(char) * len);
-  tok.text_len = len;
+  tok.text_len = len - 1;
   tok.line = line;
   tok.column = column;
   
   if (isNumber) {
     tok.type = NUMBER;
-    // tok.num_val = getNumber();
+    // tok.num_val = strtold(tok.text, NULL);
+    tok.num_val = atof(tok.text);
   }
   else {
     // if (isStringLiteral(*tok_text, dynGetSize(tok_text))) {

@@ -1,0 +1,28 @@
+print(10);
+print(3.14159);
+print(-42);
+print(-0.007);
+
+score = 100;
+user_age = 25;
+_internal_id = 999;
+alpha123 = 5 + 4 - 3 * 2 / 1;
+
+result = score * user_age;
+negative_calc = -50 / -2;
+
+score < user_age;
+score > user_age;
+score <= 100;
+score >= 100;
+score = user_age;
+
+print(score); print(user_age);
+   
+    
+	print(   _internal_id   )   ;   
+
+print(1);
+print(2);print(3);
+
+a = 1; b = 2; c = 3;

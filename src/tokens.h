@@ -14,6 +14,7 @@ typedef enum {
   MUL_OP,
   DIV_OP,
   EQL_OP,
+  DOT_OP,
 
   IS_EQUAL,
   LARGER_THAN,
@@ -25,6 +26,11 @@ typedef enum {
 
   L_PAREN,
   R_PAREN,
+  L_BRACKET,
+  R_BRACKET,
+  L_CURLY,
+  R_CURLY,
+
   SEMICOLON,
   
   END_OF_FILE,
@@ -47,5 +53,4 @@ Token nextTok (char* text, unsigned int* start, size_t size);
 void printTok (Token tok);
 
 #endif
-
 

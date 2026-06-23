@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-char punctuation[] = {'(', ')', '[', ']', '{', '}', ',', ';', '\0'}; // you should probably add '!' among these at some point
+char punctuation[] = {'(', ')', '[', ']', '{', '}', ',', ';', '\0'};
 char whitespace[] = {' ', '\t', '\n', '\r', '\0'};
-char operators[] = {'+', '-', '*', '/', '=', '\0'};
+char operators[] = {'+', '-', '*', '/', '=', '.', '\0'}; // you should probably add '!' among these at some point
 
 // short int compare_arr_size = 6;
 // char* compare[] = {"==\0", "<=\0", ">=\0", "!=\0", "<\0", ">\0"};
@@ -19,10 +19,10 @@ char* keywords[] = {"print\0"};
 
 char* tokTypes[] = {
   "NUMBER", "STR_LIT", "IDENTIFIER",
-  "OPERATOR", "ADD_OP", "SUB_OP", "MUL_OP", "DIV_OP", "EQL_OP",
+  "OPERATOR", "ADD_OP", "SUB_OP", "MUL_OP", "DIV_OP", "EQL_OP", "DOT_OP",
   "IS_EQUAL", "LARGER_THAN", "SMALLER_THAN", "LARGER_OR_EQUAL", "SMALLER_OR_EQUAL",
   "PRINT",
-  "L_PAREN", "R_PAREN", "SEMICOLON",
+  "L_PAREN", "R_PAREN", "L_BRACKET", "R_BRACKET", "L_CURLY", "R_CURLY", "SEMICOLON",
   "END_OF_FILE", "NONE"
 };
 
@@ -74,6 +74,18 @@ TokType classifyPunct(char c) {
     case ')':
       return R_PAREN;
 
+    case '[':
+      return L_BRACKET;
+
+    case ']':
+      return R_BRACKET;
+
+    case '{':
+      return L_CURLY;
+
+    case '}':
+      return R_CURLY;
+
     case ';':
       return SEMICOLON;
 
@@ -108,14 +120,22 @@ TokType classifyOperator (char c) {
   switch (c) {
     case '+':
       return ADD_OP;
+    
     case '-':
       return SUB_OP;
+    
     case '*':
       return MUL_OP;
+    
     case '/':
       return DIV_OP;
+    
     case '=':
       return EQL_OP;
+
+    case '.':
+      return DOT_OP;
+
     default:
       return NONE;
   }

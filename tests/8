@@ -1,0 +1,93 @@
+print(1000);
+print(2000);
+
+initial_balance = 5000.00;
+interest_rate = 0.045;
+years = 10;
+
+total_return = initial_balance * interest_rate * years;
+final_balance = initial_balance + total_return;
+
+print(initial_balance);
+print(final_balance);
+
+player_x = 150.25;
+player_y = -300.50;
+velocity_x = 12.5;
+velocity_y = -9.81;
+
+player_x = player_x + velocity_x;
+player_y = player_y + velocity_y;
+
+print(player_x);
+print(player_y);
+
+enemy_x = 200.0;
+enemy_y = -250.0;
+
+distance_x = player_x - enemy_x;
+distance_y = player_y - enemy_y;
+
+player_x < enemy_x;
+player_y > enemy_y;
+
+is_under_map = player_y <= -500.0;
+is_at_target = player_x >= 1000.0;
+
+print(is_under_map);
+print(is_at_target);
+
+alpha = 1;
+beta = 2;
+gamma = 3;
+delta = 4;
+
+step_1 = alpha + beta;
+step_2 = gamma * delta;
+step_3 = step_2 / step_1;
+final_score = step_3 - -50.0;
+
+print(final_score);
+
+		
+		
+		
+				
+print(99999);
+				
+		
+		
+
+_sys_status_flag = 1;
+_network_timeout = 30;
+retry_count = 0;
+
+print(_sys_status_flag);
+
+a1 = 1.1;
+a2 = 2.2;
+a3 = 3.3;
+a4 = 4.4;
+a5 = 5.5;
+
+sum = a1 + a2 + a3 + a4 + a5;
+average = sum / 5;
+
+print(average);
+
+max_limit = 50000.0;
+current_load = 49999.9;
+
+current_load < max_limit;
+current_load <= max_limit;
+current_load = max_limit;
+current_load >= max_limit;
+
+print(current_load);
+
+multiplier = -1.0;
+inverse_score = final_score * multiplier;
+
+print(inverse_score);
+
+print(0);

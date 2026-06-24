@@ -16,13 +16,21 @@ typedef enum {
   EQL_OP,
   DOT_OP,
 
+  NOT,
   IS_EQUAL,
+  NOT_EQUAL,
   LARGER_THAN,
   SMALLER_THAN,
   LARGER_OR_EQUAL,
   SMALLER_OR_EQUAL,
 
+  LET,
   PRINT,
+  IF,
+  ELSE,
+  WHILE,
+  FUN,
+  RETURN,
 
   L_PAREN,
   R_PAREN,
@@ -30,6 +38,7 @@ typedef enum {
   R_BRACKET,
   L_CURLY,
   R_CURLY,
+  COMMA,
 
   SEMICOLON,
   
@@ -50,7 +59,10 @@ typedef struct {
 
 Token nextTok (char* text, unsigned int* start, size_t size);
 
+void identifyKeywords (Token* tokens);
+
 void printTok (Token tok);
 
 #endif
+
 

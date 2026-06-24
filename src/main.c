@@ -53,7 +53,9 @@ int main(int argc, char *argv[]) {
     dynPush(tokArr, currentTok);
   } while (currentTok.type != END_OF_FILE);
 
-  printf("\n");
+  identifyKeywords(tokArr);
+
+  printf("\nTokens:\n\n");
 
   for (int i = 0; i < dynGetSize(tokArr); i ++) {
     printTok(tokArr[i]);
@@ -62,7 +64,5 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
-
 
 

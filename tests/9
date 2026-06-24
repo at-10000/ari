@@ -1,0 +1,22 @@
+let x = 5;
+
+fn add_two(x){
+  return x + 2;
+}
+
+fn add_nums(x, y){
+  return x, y;
+}
+
+let result;
+
+if(x < 7){
+  result = add_nums(x, 3);
+}
+else {
+  while(x < 100){
+    x = add_two(x);
+  }
+}
+
+print(x);

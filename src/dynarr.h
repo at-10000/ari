@@ -29,6 +29,8 @@ void* _dynarray_elem_at(void* header, int pos);
 
 #define dynGetCap(arr) _dynarray_cap((void*)(arr))
 
+// TODO: Make a function to delete an element at a certain position and offset everything. Make another one to pop last element (just decrease the size)
+
 // TODO: Turn dynPush and dynPut into functions so you can push and put literals as well, not variables. Check if that could work
 
 // TODO: Maybe make it so you can pass the variable names as well as a parameter to the functions, convert the text for arr to a string somehow. 
@@ -37,4 +39,6 @@ void* _dynarray_elem_at(void* header, int pos);
 // TODO: Make a function to free a dynArr, otherwise you will just get a memory leak. Dumbass.
 
 #endif
+
+
 

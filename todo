@@ -6,3 +6,19 @@ TODO: implement string literals, detect them or something
 
 TODO: maybe add comments or something, at first single line // and then multi line? /* */
 
+TODO: start using Makefiles
+
+DONE: fix the dot operator so it doesn't trigger incorrectly while inside a float literal
+
+TODO: Add comma operator
+
+TODO: Make a preprocessor. It should have:
+ - turning the . operator when used with a variable and function from x.fun() to fun(x)
+ - turn . for structs from x.field to x["field"]
+ - detect unary - for numbers and change the literal, while deleting the unary - element
+
+TODO: Make a function for the tokens to have a pass to detect keywords.
+
+TODO: Make the stuff in the dynarr file, plus an insert function as well to insert in the middle of a dynarr.
+
+

@@ -6,18 +6,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-char punctuation[] = {'(', ')', '[', ']', '{', '}', ',', ';', '\0'};
+char punctuation[] = {'(', ')', '[', ']', '{', '}', '#', ',', ';', '\0'}; // Don't ask me why # is here
 char whitespace[] = {' ', '\t', '\n', '\r', '\0'};
-char operators[] = {'+', '-', '*', '/', '!', '=', '\0'}; // you should probably add '!' among these at some point
+char operators[] = {'+', '-', '*', '/', '%', '!', '=', '\0'}; // add +=, -=, ++, -- at some point, somehow
 
 // REMEMBER TO CHANGE THE DAMN TOKEN TYPES ARRAY WHEN YOU CHANGE THEM IN THE ENUM
 
 char* tokTypes[] = {
   "NUMBER", "STR_LIT", "IDENTIFIER",
-  "OPERATOR", "ADD_OP", "SUB_OP", "MUL_OP", "DIV_OP", "EQL_OP", "DOT_OP",
+  "OPERATOR", "ADD_OP", "SUB_OP", "MUL_OP", "DIV_OP", "MOD_OP", "EQL_OP", "DOT_OP",
   "NOT", "IS_EQUAL", "NOT_EQUAL", "LARGER_THAN", "SMALLER_THAN", "LARGER_OR_EQUAL", "SMALLER_OR_EQUAL",
-  "LET", "PRINT", "IF", "ELSE", "WHILE", "FUN", "RETURN",
+  "LET", "PRINT", "IF", "ELSE", "LOOP", "BREAK", "FN", "RETURN",
   "L_PAREN", "R_PAREN", "L_BRACKET", "R_BRACKET", "L_CURLY", "R_CURLY", "COMMA", "SEMICOLON",
+  "HASHTAG",
   "END_OF_FILE", "NONE"
 };
 
@@ -80,6 +81,9 @@ TokType classifyPunct(char c) {
 
     case '}':
       return R_CURLY;
+
+    case '#':
+      return HASHTAG;
 
     case ',':
       return COMMA;
@@ -223,7 +227,7 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
   }
   
   {
-    TokType type;
+    TokType type = NONE;
 
     if (i + 1 < size) {
       type = classifyCompare(text[i], text[i + 1]);
@@ -342,6 +346,26 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
     // printf("%c %d\n", text[i], i);
   }
 
+  if (dynGetSize(tok_text) == 0) {  // nothing was consumed
+    fprintf(stderr, "Lexer error: Unknown character '%c' (0x%02x) at line %u, column %u\n", 
+            text[i], (unsigned char)text[i], line, column);
+    
+    Token result;
+    result.type = NONE;
+    result.text = malloc(2 * sizeof(char));
+    result.text[0] = text[i];
+    result.text[1] = '\0';
+    result.text_len = 1;
+    result.line = line;
+    result.column = column;
+    
+    column ++;
+    *start = i + 1;
+    
+    freeDynArr(tok_text);
+    return result;
+  }
+
   {
     char end = '\0';
     dynPush(tok_text, end);
@@ -381,11 +405,13 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
     tok.type = IDENTIFIER;
   }
 
+  freeDynArr(tok_text);
+
   return tok;
 }
 
-char* keywords[] = {"let\0", "print\0", "if\0", "else\0", "while\0", "fun\0", "return\0", NULL};
-TokType keywordTypes[] = {LET, PRINT, IF, ELSE, WHILE, FUN, RETURN, NONE};
+char* keywords[] = {"let\0", "print\0", "if\0", "else\0", "loop\0", "break\0", "fn\0", "return\0", NULL};
+TokType keywordTypes[] = {LET, PRINT, IF, ELSE, LOOP, BREAK, FN, RETURN, NONE};
 
 TokType keywordType (char* str) {
   if (str == NULL) {
@@ -410,7 +436,5 @@ void identifyKeywords (Token* tokens) {
     }
   }
 }
-
-
 
 

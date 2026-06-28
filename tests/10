@@ -1,0 +1,16 @@
+let x = 10;
+
+fn foo(x){
+  loop {
+    if (x < 100) {
+      x = x + 1;
+    }
+    else {
+      break;
+    }
+  }
+}
+
+x = foo(x);
+
+print(x);

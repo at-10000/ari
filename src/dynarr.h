@@ -1,7 +1,7 @@
-#include <stddef.h>
-
 #ifndef DYNARR_H
 #define DYNARR_H
+
+#include <stddef.h>
 
 size_t _dynarray_size(void* header);
 
@@ -15,7 +15,11 @@ void _dynarray_set(void** header, void* elem, size_t elem_size, int pos);
 
 void* _dynarray_elem_at(void* header, int pos);
 
+void _dynarray_free (void* header);
+
 #define newDynArr(type, size) _dynarray_create((size_t)(sizeof(type)), (size_t)(size))
+
+#define freeDynArr(arr) _dynarray_free((void*)(arr))
 
 #define dynPush(arr, elem) _dynarray_push((void**) &(arr), (void*) &(elem), (size_t)(sizeof(elem)))
 

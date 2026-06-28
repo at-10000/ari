@@ -1,7 +1,7 @@
-#include <stddef.h>
-
 #ifndef TOKENS_H
 #define TOKENS_H
+
+#include <stddef.h>
 
 typedef enum {
   NUMBER,
@@ -13,6 +13,7 @@ typedef enum {
   SUB_OP,
   MUL_OP,
   DIV_OP,
+  MOD_OP,
   EQL_OP,
   DOT_OP,
 
@@ -28,8 +29,9 @@ typedef enum {
   PRINT,
   IF,
   ELSE,
-  WHILE,
-  FUN,
+  LOOP,
+  BREAK,
+  FN,
   RETURN,
 
   L_PAREN,
@@ -38,10 +40,12 @@ typedef enum {
   R_BRACKET,
   L_CURLY,
   R_CURLY,
-  COMMA,
 
+  COMMA,
   SEMICOLON,
   
+  HASHTAG,
+
   END_OF_FILE,
   NONE
 } TokType;

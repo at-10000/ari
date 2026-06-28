@@ -3,6 +3,7 @@
 
 #include "dynarr.h"
 #include "tokens.h"
+#include "preprocessor.h"
 
 int main(int argc, char *argv[]) {
   FILE *fptr;
@@ -62,7 +63,18 @@ int main(int argc, char *argv[]) {
     printf("\n");
   }
 
+  printf("\nAfter preprocessing:\n");
+
+  tokArr = preprocessor(tokArr);
+
+  for (int i = 0; i < dynGetSize(tokArr); i ++) {
+    printTok(tokArr[i]);
+    printf("\n");
+  }
+  
   return 0;
 }
+
+
 
 

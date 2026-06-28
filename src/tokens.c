@@ -16,7 +16,7 @@ char* tokTypes[] = {
   "NUMBER", "STR_LIT", "IDENTIFIER",
   "OPERATOR", "ADD_OP", "SUB_OP", "MUL_OP", "DIV_OP", "MOD_OP", "EQL_OP", "DOT_OP",
   "NOT", "IS_EQUAL", "NOT_EQUAL", "LARGER_THAN", "SMALLER_THAN", "LARGER_OR_EQUAL", "SMALLER_OR_EQUAL",
-  "LET", "PRINT", "IF", "ELSE", "LOOP", "BREAK", "FN", "RETURN",
+  "LET", "PRINT", "IF", "ELSE", "LOOP", "BREAK", "MACRO", "FN", "RETURN",
   "L_PAREN", "R_PAREN", "L_BRACKET", "R_BRACKET", "L_CURLY", "R_CURLY", "COMMA", "SEMICOLON",
   "HASHTAG",
   "END_OF_FILE", "NONE"
@@ -410,8 +410,8 @@ Token nextTok (char* text, unsigned int* start, size_t size) {
   return tok;
 }
 
-char* keywords[] = {"let\0", "print\0", "if\0", "else\0", "loop\0", "break\0", "fn\0", "return\0", NULL};
-TokType keywordTypes[] = {LET, PRINT, IF, ELSE, LOOP, BREAK, FN, RETURN, NONE};
+char* keywords[] = {"let\0", "print\0", "if\0", "else\0", "loop\0", "break\0", "macro\n", "fn\0", "return\0", NULL};
+TokType keywordTypes[] = {LET, PRINT, IF, ELSE, LOOP, BREAK, MACRO, FN, RETURN, NONE};
 
 TokType keywordType (char* str) {
   if (str == NULL) {

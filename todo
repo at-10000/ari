@@ -21,4 +21,10 @@ TODO: Make a function for the tokens to have a pass to detect keywords.
 
 TODO: Make the stuff in the dynarr file, plus an insert function as well to insert in the middle of a dynarr.
 
+TODO: make a function in tokens.c that go through the tokens, merge together \ and characters to create special characters, which will also have a special type in the enum
 
+TODO: make a function in tokens.c that collects strings together and puts them in a single token, there is already a STR_LIT TokType, and you need to make a .string_text field perhaps, or would it simply work to remove the first " and last " of the token?
+
+TODO: make something that simply takes . and the last identifier, if there is no () then it's a field, so just replace x.field with x["field"], and find a way to do method chaining. For example what happens when you have f1(x).f2()? You need to get f2(f1(x)). From x.f1().f2() to f1(x).f2() to f2(f1(x)). Find the simplest way to do that.
+
+TODO: make a simple version of macros work, make it replace the text, and make it consider the separators as well

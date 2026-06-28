@@ -7,6 +7,7 @@ typedef enum {
   NUMBER,
   STR_LIT,
   IDENTIFIER,
+  MACRO_IDENT,
 
   OPERATOR,
   ADD_OP,
@@ -31,6 +32,7 @@ typedef enum {
   ELSE,
   LOOP,
   BREAK,
+  MACRO,
   FN,
   RETURN,
 
@@ -62,6 +64,8 @@ typedef struct {
 } Token;
 
 Token nextTok (char* text, unsigned int* start, size_t size);
+
+void getStringLiterals (Token* tokens);
 
 void identifyKeywords (Token* tokens);
 

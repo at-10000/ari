@@ -1,0 +1,24 @@
+For loops:
+
+4 fields separated by semicolons:
+ - first one is an initializer, runs once before the loop even begins
+ - second one is a conditional which is checked at the beginning of each cycle and the loop breaks if false
+ - iteration part, which is run at the end of each cycle
+ - part which is run at the beginning of each cycle after the condition has been checked
+
+The for loop is just a macro
+
+Macros:
+
+%elem and %arr are just strings, I suppose, or they will be automatically replaced by the preprocessor
+If you want to get them in a string, you need to do let elem_string = "%elem"
+
+The thing that macros return are the thing that they are replaced with.
+%arr will contain both arr and any method that are being run on it through things like method chaining
+
+macro %elem in %arr {
+  // (let _i = 0, let _arr = %arr, let %elem = _arr[_i]; _i < _arr.length(); i ++; %elem = _arr[_i])
+  let result = "(let _i = 0, let arr = %arr, let %elem = _arr[_i], _i < arr.length(); i ++; %elem = _arr[_i]";
+  return result;
+}
+

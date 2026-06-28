@@ -1,0 +1,8 @@
+macro "(" #elem in #arr ")" {
+  let result = "(let _i = 0, let arr = #arr, let #elem = _arr[_i], _i < arr.length(); i ++; #elem = _arr[_i]";
+  return result;
+}
+
+element in array;
+
+
